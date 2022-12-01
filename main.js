@@ -1,5 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   const button = document.querySelector('#screenshotButton');
+  const canvas = document.getElementById('canvas');
+  const croppedCanvas = document.getElementById('canvas-cropped');
+
+  var isDrawing = false;
+  var startX;
+  var startY;
 
   chrome.tabs.captureVisibleTab((url) => {
     const imageDiv = document.querySelector('#image');
@@ -8,24 +14,64 @@ document.addEventListener('DOMContentLoaded', () => {
     newImg.setAttribute('id', 'ss');
     // imageDiv.appendChild(newImg);
 
-    var canvas = document.getElementById('canvas');
-    canvas.setAttribute('width', 1000);
-    canvas.setAttribute('height', 1000);
-
-    var ctx = canvas.getContext('2d');
-    var image = new Image();
+    const ctx = canvas.getContext('2d');
+    const image = new Image();
     image.src = url;
     image.onload = function () {
-      // canvas.setAttribute('width', image.width);
-      // canvas.setAttribute('height', image.height);
-      // canvas.setAttribute('width', 250);
-      // canvas.setAttribute('height', 100);
+      canvas.setAttribute('width', image.width);
+      canvas.setAttribute('height', image.height);
       ctx.drawImage(image, 0, 0);
     };
+
+    canvas.addEventListener(
+      'click',
+      function (event) {
+        var rect = canvas.getBoundingClientRect();
+        var mouseX = event.clientX - rect.left;
+        var mouseY = event.clientY - rect.top;
+
+        if (isDrawing) {
+          isDrawing = false;
+          ctx.beginPath();
+          ctx.rect(startX, startY, mouseX - startX, mouseY - startY);
+          const [x1, y1, dx, dy] = [
+            startX,
+            startY,
+            mouseX - startX,
+            mouseY - startY,
+          ];
+
+          const ctx2 = croppedCanvas.getContext('2d');
+          const image2 = new Image();
+          image2.src = url;
+          image2.onload = function () {
+            alert(`${x1},${dx},${y1},${dy},`);
+            croppedCanvas.setAttribute('width', dx);
+            croppedCanvas.setAttribute('height', dy);
+            ctx2.drawImage(image, -x1, -y1);
+          };
+
+          // ctx.drawImage(image, -x1, -y1);
+          // alert(x1 - x2);
+          // alert(y1 - y2);
+          // canvas.setAttribute('width', x1 - x2);
+          // canvas.setAttribute('height', y1 - y2);
+
+          //ctx.fill();
+          canvas.style.cursor = 'default';
+        } else {
+          isDrawing = true;
+          startX = mouseX;
+          startY = mouseY;
+          canvas.style.cursor = 'crosshair';
+        }
+      },
+      false
+    );
   });
 
   button.addEventListener('click', () => {
-    const pngUrl = canvas.toDataURL('image/jpeg');
+    const pngUrl = croppedCanvas.toDataURL('image/jpeg');
     const prefix = 'data:image/jpeg;base64,';
     const truncatedUrl = pngUrl.slice(prefix.length);
 
