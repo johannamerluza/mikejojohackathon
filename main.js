@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     mode: 'javascript',
     theme: 'monokai',
   });
+  codemirror.setSize(600, 400);
+  document.getElementById('text-editor').style.display = 'none';
 
   var isDrawing = false;
   var startX;
@@ -60,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
           isDrawing = false;
           ctx.beginPath(); // TODO: remove
           ctx.rect(startX, startY, mouseX - startX, mouseY - startY); // TODO: remove
-          alert(ratio);
           const [x1, y1, dx, dy] = [
             startX / ratio,
             startY / ratio,
@@ -118,9 +119,11 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(function (response) {
         const data = response.data.responses[0];
         const text = data.fullTextAnnotation.text;
-        const textDiv = document.querySelector('#text');
-        textDiv.innerText = JSON.stringify(text); //JSON.stringify(response);
+        // const textDiv = document.querySelector('#text');
+        // textDiv.innerText = JSON.stringify(text); //JSON.stringify(response);
         codemirror.setValue(text);
+        document.getElementById('canvas').remove();
+        document.getElementById('text-editor').style.display = '';
       })
       .catch(function (error) {
         console.log(error);
