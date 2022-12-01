@@ -1,5 +1,25 @@
+const runCode = function (codeStr) {
+  const _stdOut = [];
+  const _stdErr = [];
+  const _rn = [];
+  const logOld = console.log;
+  console.log = function (...e) {
+    _stdOut.push(e);
+  };
+  try {
+    _rn.push(eval(codeStr));
+  } catch (e) {
+    _stdErr.push(e.message);
+  }
+  console.log = logOld;
+  return {
+    stdOut: _stdOut,
+    stderr: _stdErr,
+    rn: _rn,
+  };
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  const button = document.querySelector('#screenshotButton');
   const canvas = document.getElementById('canvas');
   const croppedCanvas = document.getElementById('canvas-cropped');
   const codemirror = CodeMirror(document.querySelector('#text-editor'), {
@@ -10,6 +30,28 @@ document.addEventListener('DOMContentLoaded', () => {
     theme: 'monokai',
   });
   codemirror.setSize(600, 400);
+  const stdout = CodeMirror(document.querySelector('#text-editor'), {
+    lineNumbers: true,
+    tabSize: 2,
+    value: 'standard out here',
+    mode: 'javascript',
+    theme: 'monokai',
+  });
+  stdout.setSize(600, 200);
+
+  const button = document.getElementById('runCode');
+  button.addEventListener('click', () => {
+    const str = codemirror.getValue();
+    //const str = 'a=2; console.log(2+2)';
+    const res = runCode(str);
+    // {"stdOut":[[4]],"stderr":[],"rn":[null]}
+    let out = '';
+    for (let stdout of res['stdOut']) out += stdout + '\n';
+    for (let stderr of res['stderr']) out += stderr + '\n';
+    out = out.slice(0, out.length - 1); // remove last \n
+    stdout.setValue(out);
+  });
+
   document.getElementById('text-editor').style.display = 'none';
 
   var isDrawing = false;
@@ -129,6 +171,4 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(error);
       });
   }
-
-  // button.addEventListener('click', () => {});
 });
