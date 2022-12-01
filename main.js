@@ -45,19 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const image2 = new Image();
           image2.src = url;
           image2.onload = function () {
-            alert(`${x1},${dx},${y1},${dy},`);
             croppedCanvas.setAttribute('width', dx);
             croppedCanvas.setAttribute('height', dy);
             ctx2.drawImage(image, -x1, -y1);
+            runOCR();
           };
-
-          // ctx.drawImage(image, -x1, -y1);
-          // alert(x1 - x2);
-          // alert(y1 - y2);
-          // canvas.setAttribute('width', x1 - x2);
-          // canvas.setAttribute('height', y1 - y2);
-
-          //ctx.fill();
           canvas.style.cursor = 'default';
         } else {
           isDrawing = true;
@@ -70,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   });
 
-  button.addEventListener('click', () => {
+  function runOCR() {
     const pngUrl = croppedCanvas.toDataURL('image/jpeg');
     const prefix = 'data:image/jpeg;base64,';
     const truncatedUrl = pngUrl.slice(prefix.length);
@@ -105,5 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(function (error) {
         console.log(error);
       });
-  });
+  }
+
+  // button.addEventListener('click', () => {});
 });
