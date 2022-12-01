@@ -5,11 +5,20 @@
   <meta charset="UTF-8" />
   <title>screenshot extension</title>
   <script src="axios.min.js"></script>
+  <script src="codemirror.min.js"></script>
+  <link rel="stylesheet" href="codemirror.min.css">
+  <link rel="stylesheet" href="monokai.min.css">
+
   <script src="secrets.js"></script>
   <script src="main.js"></script>
+  <script src="javascript.min.js"></script>
+
 </head>
 
 <body>
+  <div id="text-editor">
+
+  </div>
   <div id="text">
     - click on the apple to open the extension. it should automatically screenshot your tab<br />
     - click twice on the image to crop it. First click should be upper left of rectangle, second click should be bottom right<br />

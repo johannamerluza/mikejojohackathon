@@ -2,6 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const button = document.querySelector('#screenshotButton');
   const canvas = document.getElementById('canvas');
   const croppedCanvas = document.getElementById('canvas-cropped');
+  const codemirror = CodeMirror(document.querySelector('#text-editor'), {
+    lineNumbers: true,
+    tabSize: 2,
+    value: 'console.log("Hello, World");',
+    mode: 'javascript',
+    theme: 'monokai',
+  });
 
   var isDrawing = false;
   var startX;
@@ -93,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = data.fullTextAnnotation.text;
         const textDiv = document.querySelector('#text');
         textDiv.innerText = JSON.stringify(text); //JSON.stringify(response);
+        codemirror.setValue(text);
       })
       .catch(function (error) {
         console.log(error);
