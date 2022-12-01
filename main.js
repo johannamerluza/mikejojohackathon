@@ -24,10 +24,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     const image = new Image();
     image.src = url;
+    let ratio = undefined;
+
     image.onload = function () {
-      canvas.setAttribute('width', image.width);
-      canvas.setAttribute('height', image.height);
-      ctx.drawImage(image, 0, 0);
+      // draws image onto canvas resized to fit within 800x600
+      canvas.width = 800;
+      canvas.height = 600;
+      const hRatio = canvas.width / image.width;
+      const vRatio = canvas.height / image.height;
+      ratio = Math.min(hRatio, vRatio);
+      ctx.drawImage(
+        image,
+        0,
+        0,
+        image.width,
+        image.height,
+        0,
+        0,
+        image.width * ratio,
+        image.height * ratio
+      );
+      // canvas.setAttribute('width', image.width);
+      // canvas.setAttribute('height', image.height);
+      // ctx.drawImage(image, 0, 0);
     };
 
     canvas.addEventListener(
@@ -39,13 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (isDrawing) {
           isDrawing = false;
-          ctx.beginPath();
-          ctx.rect(startX, startY, mouseX - startX, mouseY - startY);
+          ctx.beginPath(); // TODO: remove
+          ctx.rect(startX, startY, mouseX - startX, mouseY - startY); // TODO: remove
+          alert(ratio);
           const [x1, y1, dx, dy] = [
-            startX,
-            startY,
-            mouseX - startX,
-            mouseY - startY,
+            startX / ratio,
+            startY / ratio,
+            (mouseX - startX) / ratio,
+            (mouseY - startY) / ratio,
           ];
 
           const ctx2 = croppedCanvas.getContext('2d');
