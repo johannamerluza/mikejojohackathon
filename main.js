@@ -20,8 +20,9 @@ const runCode = function (codeStr) {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.getElementById('canvas');
-  const croppedCanvas = document.getElementById('canvas-cropped');
+  const canvas = document.getElementById('canvas'); // where the raw screenshot goes
+  const croppedCanvas = document.getElementById('canvas-cropped'); // where the cropped screenshot goes, hidden so the user can't see
+  // text box where the ocr results
   const codemirror = CodeMirror(document.querySelector('#text-editor'), {
     lineNumbers: true,
     tabSize: 2,
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     theme: 'monokai',
   });
   codemirror.setSize(600, 400);
+  // text box where the standard output goes
   const stdout = CodeMirror(document.querySelector('#text-editor'), {
     lineNumbers: true,
     tabSize: 2,
@@ -39,12 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   stdout.setSize(600, 200);
 
+  // button that runs the code
   const button = document.getElementById('runCode');
   button.addEventListener('click', () => {
     const str = codemirror.getValue();
-    //const str = 'a=2; console.log(2+2)';
     const res = runCode(str);
-    // {"stdOut":[[4]],"stderr":[],"rn":[null]}
     let out = '';
     for (let stdout of res['stdOut']) out += stdout + '\n';
     for (let stderr of res['stderr']) out += stderr + '\n';
@@ -54,12 +55,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('text-editor').style.display = 'none';
 
-  var isDrawing = false;
-  var startX;
-  var startY;
+  // state variables for cropping box
+  let isDrawing = false;
+  let startX;
+  let startY;
 
   chrome.tabs.captureVisibleTab((url) => {
-    const imageDiv = document.querySelector('#image');
+    const imageDiv = document.querySelector('#image'); // TODO: delete me
     const newImg = document.createElement('img');
     newImg.setAttribute('src', url);
     newImg.setAttribute('id', 'ss');
@@ -96,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.addEventListener(
       'click',
       function (event) {
-        var rect = canvas.getBoundingClientRect();
+        var rect = canvas.getBoundingClientRect(); // TODO: remove
         var mouseX = event.clientX - rect.left;
         var mouseY = event.clientY - rect.top;
 
@@ -165,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // textDiv.innerText = JSON.stringify(text); //JSON.stringify(response);
         codemirror.setValue(text);
         document.getElementById('canvas').remove();
-        document.getElementById('text-editor').style.display = '';
+        document.getElementById('text-editor').style.display = ''; // unhides the code editor
       })
       .catch(function (error) {
         console.log(error);
