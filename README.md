@@ -1,4 +1,4 @@
-# mikejojohacker
+# CODE SHOT
 
 ## Instructions
 
