@@ -30,16 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
     mode: 'javascript',
     theme: 'monokai',
   });
-  codemirror.setSize(600, 400);
+  codemirror.setSize(550, 350);
   // text box where the standard output goes
   const stdout = CodeMirror(document.querySelector('#text-editor'), {
     lineNumbers: true,
     tabSize: 2,
-    value: 'standard out here',
+    value: 'logging messages here',
     mode: 'javascript',
     theme: 'monokai',
+    readOnly: true,
   });
-  stdout.setSize(600, 200);
+  stdout.setSize(550, 150);
 
   // button that runs the code
   const button = document.getElementById('runCode');
@@ -53,7 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
     stdout.setValue(out);
   });
 
-  document.getElementById('text-editor').style.display = 'none';
+  // document.getElementById('text-editor').style.display = 'none';
+  document.getElementById('text-editor').classList.toggle('hide');
 
   // state variables for cropping box
   let isDrawing = false;
@@ -74,8 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     image.onload = function () {
       // draws image onto canvas resized to fit within 800x600
-      canvas.width = 800;
-      canvas.height = 600;
+      canvas.width = 700;
+      canvas.height = 550;
       const hRatio = canvas.width / image.width;
       const vRatio = canvas.height / image.height;
       ratio = Math.min(hRatio, vRatio);
@@ -167,7 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // textDiv.innerText = JSON.stringify(text); //JSON.stringify(response);
         codemirror.setValue(text);
         document.getElementById('canvas').remove();
-        document.getElementById('text-editor').style.display = ''; // unhides the code editor
+        // document.getElementById('text-editor').style.display = ''; // unhides the code editor
+        document.getElementById('text-editor').classList.toggle('hide');
       })
       .catch(function (error) {
         console.log(error);
