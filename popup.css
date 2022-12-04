@@ -16,7 +16,7 @@ body{
     display: flex;
     flex-direction: row;
     align-content: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     color: white;
     background-color:lightcoral;
@@ -28,8 +28,30 @@ body{
     font-weight: bold;
 }
 
+span{
+    align-self: center;
+}
+
 #btn-text {
     align-self: center;
+}
+
+.skip-code {
+    width: 100%;
+    text-align: center;
+    border: none;
+    outline: none;
+    height: 50px;
+    background-color: lightcoral;
+    font-size: 25px;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.skip-code:hover {
+    background-color: rgb(199, 107, 107);
+    transition: 100ms;
 }
 
 .cat-img {
@@ -45,5 +67,5 @@ body{
     transition: 100ms;
 }
 
-/* 
+/*
 .CodeMirror { font-family: Arial, monospace; font-size: 20px; } */

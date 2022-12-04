@@ -63,6 +63,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let startY;
 
   chrome.tabs.captureVisibleTab((url) => {
+    const skipToCode = document.createElement('button');
+    skipToCode.classList.add('skip-code');
+    skipToCode.innerText = 'Go to Code Mirror';
+    const body = document.querySelector('body');
+    body.prepend(skipToCode);
+
+    skipToCode.addEventListener('click', (e) => {
+      skipToCode.classList.toggle('hide');
+      document.getElementById('canvas').remove();
+      document.getElementById('text-editor').classList.toggle('hide');
+    });
+
     const imageDiv = document.querySelector('#image'); // TODO: delete me
     const newImg = document.createElement('img');
     newImg.setAttribute('src', url);
@@ -171,6 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('canvas').remove();
         // document.getElementById('text-editor').style.display = ''; // unhides the code editor
         document.getElementById('text-editor').classList.toggle('hide');
+        document.querySelector('.skip-code').classList.toggle('hide');
       })
       .catch(function (error) {
         console.log(error);

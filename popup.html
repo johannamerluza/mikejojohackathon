@@ -1,32 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>screenshot extension</title>
+    <script src="axios.min.js"></script>
+    <script src="codemirror.min.js"></script>
+    <link rel="stylesheet" href="popup.css" />
+    <link rel="stylesheet" href="codemirror.min.css" />
+    <link rel="stylesheet" href="monokai.min.css" />
 
-<head>
-  <meta charset="UTF-8" />
-  <title>screenshot extension</title>
-  <script src="axios.min.js"></script>
-  <script src="codemirror.min.js"></script>
-  <link rel="stylesheet" href="popup.css">
-  <link rel="stylesheet" href="codemirror.min.css">
-  <link rel="stylesheet" href="monokai.min.css">
+    <script src="secrets.js"></script>
+    <script src="main.js"></script>
+    <script src="javascript.min.js"></script>
+  </head>
 
-  <script src="secrets.js"></script>
-  <script src="main.js"></script>
-  <script src="javascript.min.js"></script>
+  <body>
+    <div id="text-editor">
+      <button id="runCode"><span>Run code</span></button>
+    </div>
+    <canvas id="canvas-cropped"></canvas>
+    <canvas id="canvas"></canvas>
 
-</head>
-
-<body>
-  <div id="text-editor">
-    <button id="runCode">Run code</button>    
-  </div>
-  <canvas id="canvas-cropped"></canvas>
-  <canvas id="canvas"></canvas>
-
-  <div id="image"></div>  
-</body>
-
+    <div id="image"></div>
+  </body>
 </html>
-
 
 <!-- "default_popup": "popup.html", -->
